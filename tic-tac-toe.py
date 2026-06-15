@@ -54,14 +54,17 @@ def check_game_ongoing():
             move_available = True
 
     if not move_available:
-        print("No moves available")
+        print("Player One and Player Two have tied!")
         return False
 
     # TODO: only check winning moves containing the most recent user input move
     for winning_move in WINNING_MOVES:
         # TODO: Improve logic check to make sure "winning move" is not 3-in-a-row of blank spaces
         if (GAME_STATE[winning_move[0]] == GAME_STATE[winning_move[1]] == GAME_STATE[winning_move[2]]) and (GAME_STATE[winning_move[0]] != " "):
-            print(f"Winning move: {winning_move}" )
+            if CURRENT_PLAYER == 1:
+                print("Player One (X) wins!")
+            elif CURRENT_PLAYER == 2:
+                print("Player Two (O) wins!")
             return False
 
     return True
@@ -83,6 +86,7 @@ def main():
         display_current_game_state()
         take_user_move()
         is_game_ongoing = check_game_ongoing()
+
         switch_current_player()
 
 if __name__ == "__main__":
