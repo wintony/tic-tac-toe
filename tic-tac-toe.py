@@ -37,7 +37,21 @@ def take_user_move():
             print("-----")
 
     # TODO: Validate input is a valid move int
-    move = int(input("Please enter the number where you would like to place your next move: "))
+    is_valid_user_input = False
+    user_input = ""
+    move = None
+
+    while not is_valid_user_input:
+        user_input = input("Please enter the number where you would like to place your next move: ")
+
+        try:
+            move = int(user_input)
+            if move >= 1 and move <= 9 and GAME_STATE[move-1] == " ":
+                is_valid_user_input = True
+            else:
+                print("User input must be a valid move.")
+        except ValueError:
+            print("User input must be a valid move.")
 
     if CURRENT_PLAYER == 1:
         GAME_STATE[move-1] = "X"
