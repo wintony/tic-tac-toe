@@ -1,7 +1,5 @@
 Below is an abbreviated sample game transcript for reference.
 
-# Example Output
-
 Terminal:
 
 Welcome to Tic Tac Toe!
