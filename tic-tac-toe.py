@@ -1,25 +1,32 @@
 CURRENT_PLAYER = 1
 GAME_STATE = [" ", " ", " ", " ", " ", " ", " ", " ", " "]
-WINNING_MOVES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+
+WINNING_LINES = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+]
+
+EMPTY = " "
 
 def start_game():
     print("Welcome to Tic Tac Toe!")
 
-def display_board():
-    print("\nCurrent game board:\n")
-
+def display_grid(grid):
     for i in range(0, 9, 3):
         row = ""
         for j in range(i, i+3):
-            if GAME_STATE[j] == " ":
-                row += " "
-            else:
-                row += GAME_STATE[j]
+            row += " " + grid[j]
             if j < i+2:
-                row += "|"
+                row += " |"
         print(row)
         if i < 6:
-            print("-----")
+            print("-----------")
+
+def display_board():
+    print("\nCurrent game board:\n")
+
+    display_grid(GAME_STATE)
 
 def display_current_game_state():
     if CURRENT_PLAYER == 1:
@@ -32,46 +39,44 @@ def display_current_game_state():
 def take_user_move():
     print("\nAvailable moves are shown below:\n")
 
-    for i in range(0, 9, 3):
-        row = ""
-        for j in range(i, i+3):
-            if GAME_STATE[j] == " ":
-                row += str(j+1)
-            else:
-                row += "#"
-            if j < i+2:
-                row += "|"
-        print(row)
-        if i < 6:
-            print("-----")
+    available_moves = []
+    for i in range(len(GAME_STATE)):
+        if GAME_STATE[i] == EMPTY:
+            available_moves.append(str(i + 1))
+        else:
+            available_moves.append("#")
+
+    display_grid(available_moves)
 
     is_valid_user_input = False
     user_input = ""
     move = None
+    move_index = None
 
     while not is_valid_user_input:
         user_input = input("\nPlease enter the number where you would like to place your next move: ")
 
         try:
             move = int(user_input)
-            if move >= 1 and move <= 9 and GAME_STATE[move-1] == " ":
+            move_index = move - 1
+            if move >= 1 and move <= 9 and GAME_STATE[move_index] == EMPTY:
                 is_valid_user_input = True
             else:
-                print("User input must be a valid move.")
+                print("\nUser input must be a valid move.")
         except ValueError:
-            print("User input must be a valid move.")
+            print("\nUser input must be a valid move.")
 
     if CURRENT_PLAYER == 1:
-        GAME_STATE[move-1] = "X"
+        GAME_STATE[move_index] = "X"
     elif CURRENT_PLAYER == 2:
-        GAME_STATE[move-1] = "O"
+        GAME_STATE[move_index] = "O"
 
-    return move
+    return move_index
 
-def check_game_ongoing(move):
-    for winning_move in WINNING_MOVES:
-        if move in winning_move:
-            if (GAME_STATE[winning_move[0]] != " ") and (GAME_STATE[winning_move[0]] == GAME_STATE[winning_move[1]] == GAME_STATE[winning_move[2]]):
+def check_game_ongoing(move_index):
+    for winning_line in WINNING_LINES:
+        if move_index in winning_line:
+            if (GAME_STATE[winning_line[0]] != EMPTY) and (GAME_STATE[winning_line[0]] == GAME_STATE[winning_line[1]] == GAME_STATE[winning_line[2]]):
                 display_board()
                 if CURRENT_PLAYER == 1:
                     print("\nPlayer One (X) wins!")
@@ -79,10 +84,12 @@ def check_game_ongoing(move):
                     print("\nPlayer Two (O) wins!")
                 return False
 
-    if " " not in GAME_STATE:
+    if EMPTY not in GAME_STATE:
         display_board()
         print("\nPlayer One and Player Two have tied!")
         return False
+
+    switch_current_player()
 
     return True
 
@@ -101,10 +108,8 @@ def main():
 
     while is_game_ongoing:
         display_current_game_state()
-        move = take_user_move() - 1
-        is_game_ongoing = check_game_ongoing(move)
-
-        switch_current_player()
+        move_index = take_user_move()
+        is_game_ongoing = check_game_ongoing(move_index)
 
 if __name__ == "__main__":
     main()
