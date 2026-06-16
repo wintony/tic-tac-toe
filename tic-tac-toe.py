@@ -21,13 +21,6 @@ def display_board():
         if i < 6:
             print("-----")
 
-    # TODO: Use range to condense the below logic
-    # print(f"{GAME_STATE[0]}|{GAME_STATE[1]}|{GAME_STATE[2]}")
-    # print("-----")
-    # print(f"{GAME_STATE[3]}|{GAME_STATE[4]}|{GAME_STATE[5]}")
-    # print("-----")
-    # print(f"{GAME_STATE[6]}|{GAME_STATE[7]}|{GAME_STATE[8]}\n")
-
 def display_current_game_state():
     if CURRENT_PLAYER == 1:
         print("\nIt is Player One's (X) turn.")
@@ -52,7 +45,6 @@ def take_user_move():
         if i < 6:
             print("-----")
 
-    # TODO: Validate input is a valid move int
     is_valid_user_input = False
     user_input = ""
     move = None
@@ -74,30 +66,23 @@ def take_user_move():
     elif CURRENT_PLAYER == 2:
         GAME_STATE[move-1] = "O"
 
-def check_game_ongoing():
-    # Check if any moves are still available
-    # TODO: Keep track of user moves. If move == 9, return True
-    move_available = False
+    return move
 
-    for i in range(9):
-        if GAME_STATE[i] == " ":
-            move_available = True
+def check_game_ongoing(move):
+    for winning_move in WINNING_MOVES:
+        if move in winning_move:
+            if (GAME_STATE[winning_move[0]] != " ") and (GAME_STATE[winning_move[0]] == GAME_STATE[winning_move[1]] == GAME_STATE[winning_move[2]]):
+                display_board()
+                if CURRENT_PLAYER == 1:
+                    print("\nPlayer One (X) wins!")
+                elif CURRENT_PLAYER == 2:
+                    print("\nPlayer Two (O) wins!")
+                return False
 
-    if not move_available:
+    if " " not in GAME_STATE:
         display_board()
         print("\nPlayer One and Player Two have tied!")
         return False
-
-    # TODO: only check winning moves containing the most recent user input move
-    for winning_move in WINNING_MOVES:
-        # TODO: Improve logic check to make sure "winning move" is not 3-in-a-row of blank spaces
-        if (GAME_STATE[winning_move[0]] == GAME_STATE[winning_move[1]] == GAME_STATE[winning_move[2]]) and (GAME_STATE[winning_move[0]] != " "):
-            display_board()
-            if CURRENT_PLAYER == 1:
-                print("\nPlayer One (X) wins!")
-            elif CURRENT_PLAYER == 2:
-                print("\nPlayer Two (O) wins!")
-            return False
 
     return True
 
@@ -116,8 +101,8 @@ def main():
 
     while is_game_ongoing:
         display_current_game_state()
-        take_user_move()
-        is_game_ongoing = check_game_ongoing()
+        move = take_user_move() - 1
+        is_game_ongoing = check_game_ongoing(move)
 
         switch_current_player()
 
