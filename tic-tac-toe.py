@@ -12,6 +12,7 @@ EMPTY = " "
 def start_game():
     print("Welcome to Tic Tac Toe!")
 
+# Takes in a length 9 list and prints each item in the list in a square in a Tic-Tac-Toe board
 def display_grid(grid):
     for i in range(0, 9, 3):
         row = ""
@@ -36,6 +37,7 @@ def display_current_game_state():
 
     display_board()
 
+# Asks user to input a move and places the move
 def take_user_move():
     print("\nAvailable moves are shown below:\n")
 
@@ -47,6 +49,8 @@ def take_user_move():
             available_moves.append("#")
 
     display_grid(available_moves)
+
+    # Validates that the input is an int between 1 and 9 and does not already have a move placed in that spot
 
     is_valid_user_input = False
     user_input = ""
@@ -73,6 +77,8 @@ def take_user_move():
 
     return move_index
 
+# Returns False if a given move ended the game or if there are no valid moves remaining
+# Otherwise it switches the players and returns True
 def check_game_ongoing(move_index):
     for winning_line in WINNING_LINES:
         if move_index in winning_line:
