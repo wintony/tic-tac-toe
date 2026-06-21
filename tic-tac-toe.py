@@ -9,6 +9,7 @@ WINNING_LINES = [
 
 EMPTY = " "
 
+# Prints welcome message
 def start_game():
     print("Welcome to Tic Tac Toe!")
 
@@ -24,11 +25,13 @@ def display_grid(grid):
         if i < 6:
             print("-----------")
 
+# Prints the game board
 def display_board():
     print("\nCurrent game board:\n")
 
     display_grid(GAME_STATE)
 
+# Prints the current player and the game board
 def display_current_game_state():
     if CURRENT_PLAYER == 1:
         print("\nIt is Player One's (X) turn.")
@@ -99,6 +102,7 @@ def check_game_ongoing(move_index):
 
     return True
 
+# Toggles between Player 1 and Player 2
 def switch_current_player():
     global CURRENT_PLAYER
 
@@ -107,6 +111,7 @@ def switch_current_player():
     elif CURRENT_PLAYER == 2:
         CURRENT_PLAYER = 1
 
+# Runs the game loop
 def main():
     start_game()
 
