@@ -1,4 +1,4 @@
-# Pairing Notes
+# Extension ideas
 
 ## Current project
 
